@@ -70,16 +70,16 @@ class Sockets {
                 //this.io.to(payload.from).emit('unseen:messages', await getUnseenMessages(payload.from));
             });
 
-            socket.on('users:changes', async(payload) => {
-                console.log('Users changed', payload);
+            socket.on('users:changes', async() => {
+                console.log('Users changed');
                 this.io.emit('user:list', await getUsers());
             });
 
-            socket.on('delete:user', async(payload) => {
-                console.log('Delete user', payload);
-                await deleteUser(payload);
-                this.io.emit('user:list', await getUsers());
-            });
+            // socket.on('delete:user', async(payload) => {
+            //     console.log('Delete user', payload);
+            //     await deleteUser(payload);
+            //     this.io.emit('user:list', await getUsers());
+            // });
 
             // Disconnect
             socket.on('disconnect', async() => {

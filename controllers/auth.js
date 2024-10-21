@@ -113,17 +113,22 @@ const deleteUser = async (req, res = response) => {
     const uid = req.uid;
 
     try {
-        // Delete user
-        const user = await User.findByIdAndDelete(uid);
+        // Check if the user exists
+        const user = await User.findById(uid);
         if (!user) {
             return res.status(404).json({
                 ok: false,
                 msg: 'User not found',
             });
         }
-        // Delete all messages sent or received by the user
-        const uidObj = ObjectId.createFromHexString(uid)
-        await Message.deleteMany({ $or: [{ from: uidObj }, { to: uidObj }] });
+
+        // Delete the user
+        await User.findByIdAndDelete(uid);
+        console.log('User deleted successfully');
+
+        // Delete the messages associated with the user
+        await Message.deleteMany({ $or: [{ from: uid }, { to: uid }] });
+        console.log('Messages deleted successfully');
 
         res.json({
             ok: true,

@@ -6,6 +6,9 @@ const ObjectId = require('mongodb').ObjectId;
 
 const connectedUser = async (uid = '') => {
     const user = await User.findById(uid);
+    if (!user) {
+        return false;
+    }
     user.online = true;
     await user.save();
     return user;
@@ -13,6 +16,9 @@ const connectedUser = async (uid = '') => {
 
 const disconnectedUser = async (uid = '') => {
     const user = await User.findById(uid);
+    if (!user) {
+        return false;
+    }
     user.online = false;
     await user.save();
     return user;

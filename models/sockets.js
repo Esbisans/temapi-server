@@ -70,10 +70,10 @@ class Sockets {
                 //this.io.to(payload.from).emit('unseen:messages', await getUnseenMessages(payload.from));
             });
 
-            socket.on('users:changes', async() => {
-                console.log('Users changed');
-                this.io.emit('user:list', await getUsers());
-            });
+            // socket.on('users:changes', async() => {
+            //     console.log('Users changed');
+            //     this.io.emit('user:list', await getUsers());
+            // });
 
             // socket.on('delete:user', async(payload) => {
             //     console.log('Delete user', payload);

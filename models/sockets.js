@@ -1,5 +1,6 @@
 const { connectedUser, disconnectedUser, getUsers, recordMessage, getLastMessages, getUnseenMessages, markMessagesAsSeen, markOneMessageAsSeen, deleteUser } = require("../controllers/sockets");
 const { checkJWT } = require("../helpers/jwt");
+const Markers = require("./markers");
 
 
 class Sockets {
@@ -7,6 +8,8 @@ class Sockets {
     constructor( io ) {
 
         this.io = io;
+
+        this.markers = new Markers();
 
         this.socketEvents();
     }
@@ -70,16 +73,21 @@ class Sockets {
                 //this.io.to(payload.from).emit('unseen:messages', await getUnseenMessages(payload.from));
             });
 
-            // socket.on('users:changes', async() => {
-            //     console.log('Users changed');
-            //     this.io.emit('user:list', await getUsers());
-            // });
+            //socket.emit('active:markers', this.markers.active);
 
-            // socket.on('delete:user', async(payload) => {
-            //     console.log('Delete user', payload);
-            //     await deleteUser(payload);
-            //     this.io.emit('user:list', await getUsers());
-            // });
+            socket.on('new:marker', (marker) => {
+                this.markers.addMarker(marker);
+                socket.broadcast.emit('new:marker', marker);
+            });
+
+            socket.on('active:markers', () => {
+                socket.emit('active:markers', this.markers.active);
+            });
+
+            socket.on ('update:marker', (marker) => {
+                this.markers.updateMarker(marker);
+                socket.broadcast.emit('update:marker', marker);
+            });
 
             // Disconnect
             socket.on('disconnect', async() => {

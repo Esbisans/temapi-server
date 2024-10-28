@@ -19,8 +19,8 @@ class Markers {
         this.active[marker.id] = marker;
     }
 
-    getMarkers() {
-        return Object.values( this.active );
+    getMarkerById(uid) {
+        return this.active[uid] || {}; 
     }
 
 }

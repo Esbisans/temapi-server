@@ -43,7 +43,8 @@ class Sockets {
 
             // Emit unseen messages when a user connects
             this.io.to(uid).emit('unseen:messages', await getUnseenMessages(uid));
-
+            
+            this.io.to(uid).emit('user:marker', this.markers.getMarkerById(uid))
             // Listen when the client mark messages as seen
             socket.on('mark:messages:seen', async(payload) => {
                 // uid user that seen the messages
@@ -87,6 +88,11 @@ class Sockets {
             socket.on ('update:marker', (marker) => {
                 this.markers.updateMarker(marker);
                 socket.broadcast.emit('update:marker', marker);
+            });
+
+            socket.on('delete:marker', (id) => {
+                this.markers.removeMarker(id);
+                socket.broadcast.emit('delete:marker', id);
             });
 
             // Disconnect

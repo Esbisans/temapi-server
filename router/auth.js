@@ -13,6 +13,7 @@ const router = Router();
 
 //Crear nuevos usuarios
 router.post('/new', [
+    check('avatar', 'avatar is required').not().isEmpty(),
     check('name', 'name is required').not().isEmpty(),
     check('email', 'email is required').isEmail(),
     check('password', 'password is required').not().isEmpty(),

@@ -2,7 +2,6 @@ const { response } = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const Message = require('../models/message');
-const ObjectId = require('mongodb').ObjectId;
 const { generateJWT } = require('../helpers/jwt');
 
 const createUser = async (req, res  = response) => {
